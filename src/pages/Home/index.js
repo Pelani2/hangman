@@ -1,9 +1,10 @@
 import React from "react";
+import HangmanGame from "../../components/HangmanGame";
 
 const Home = () => {
     return (
         <div>
-            Home
+            <HangmanGame />
         </div>
     );
 };
