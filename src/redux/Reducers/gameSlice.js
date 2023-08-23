@@ -1,4 +1,3 @@
-// src/gameSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const gameSlice = createSlice({
@@ -34,3 +33,4 @@ const gameSlice = createSlice({
 export const { guessLetter, newGame } = gameSlice.actions;
 
 export default gameSlice.reducer;
+
