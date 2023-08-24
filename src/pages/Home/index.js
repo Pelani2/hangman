@@ -1,12 +1,9 @@
 import React from "react";
-import HangmanGame from "../../components/HangmanGame";
 
-const Home = () => {
-    return (
+export default function Home() {
+    return(
         <div>
-            <HangmanGame />
+            Home
         </div>
     );
-};
-
-export default Home;
+}
