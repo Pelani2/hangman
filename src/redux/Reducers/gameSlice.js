@@ -1,10 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import words from "../../utils/words";
 
 const selectRandomWord = createAsyncThunk(
   'game/selectRandomWord',
   async () => {
-    // Replace this with your own logic for selecting a random word
-    const words = ['apple', 'banana', 'orange'];
     const randomIndex = Math.floor(Math.random() * words.length);
     return words[randomIndex];
   }

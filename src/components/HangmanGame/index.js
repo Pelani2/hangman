@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addGuessedLetter, resetGame, selectRandomWord } from "../../redux/Reducers/gameSlice";
 import WordDisplay from "../WordDisplay";
+import "./hangman-game-styles.scss";
 
 const HangmanGame = () => {
     const dispatch = useDispatch();
@@ -22,27 +23,28 @@ const HangmanGame = () => {
     const hasLost = incorrectGuesses >= 6;
 
     return (
-        <div>
-            <h1>
+        <div className="hangman-game">
+            <h1 className="hangman-game__title">
                 Hangman
             </h1>
-            {hasWon && <p> Congratulations, you won!</p>}
-            {hasLost && <p> Sorry, you lost. The word was: {word} </p>}
+            {hasWon && <p className="hangman-game__message"> Congratulations, you won!</p>}
+            {hasLost && <p className="hangman-game__message"> Sorry, you lost. The word was: {word} </p>}
             {!hasWon && !hasLost && (
-                <div>
+                <div className="hangman-game__content">
                     <WordDisplay />
-                    <p>
+                    <p className="hangman-game__info">
                         Incorrect guesses: {incorrectGuesses}
                     </p>
-                    <p>
+                    <p className="hangman-game__info">
                         Guessed letters: {guessedLetters.join(", ")}
                     </p>
-                    <div>
+                    <div className="hangman-game__buttons">
                         {[...'abcdefghijklmnopqrstuvwxyz'].map((letter) => (
                             <button
                                 key={letter}
                                 onClick={() => handleLetterClick(letter)}
                                 disabled={guessedLetters.includes(letter)}
+                                className="hangman-game__button"
                             >
                                 {letter}
                             </button>
@@ -50,7 +52,7 @@ const HangmanGame = () => {
                     </div>
                 </div>
             )}
-            <button onClick={handleResetClick}>
+            <button onClick={handleResetClick} className="hangman-game__reset">
                 Reset
             </button>
         </div>
