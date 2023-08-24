@@ -1,10 +1,10 @@
 import React from "react";
-import WordDisplay from "../../components/WordDisplay";
+import HangmanGame from "../../components/HangmanGame";
 
 export default function Home() {
     return(
         <div>
-            <WordDisplay />
+            <HangmanGame />
         </div>
     );
 }
