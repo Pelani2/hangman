@@ -4,6 +4,7 @@ import { addGuessedLetter, resetGame, setDifficulty, startGame, setShowDifficult
 import WordDisplay from "../WordDisplay";
 import Hint from "../Hint";
 import "./hangman-game-styles.scss";
+import { resetHint } from "../../redux/Reducers/hintSlice";
 
 const HangmanGame = () => {
     const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const HangmanGame = () => {
     const handleResetClick = () => {
         dispatch(resetGame());
         dispatch(selectRandomWordAndMaxGuesses());
+        dispatch(resetHint());
     };
 
 

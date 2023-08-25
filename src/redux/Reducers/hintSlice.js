@@ -1,20 +1,27 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { selectRandomWordAndMaxGuesses } from "./gameSlice";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
+
+export const resetHint = createAction("hint/resetHint");
 
 export const requestHint = createAsyncThunk(
     "hint/requestHint",
     async (_, { getState }) => {
         const state = getState();
-        const { word, maxGuesses, } = state.game;
+        const { word } = state.game; 
+        const { hintUsed } = state.hint;
 
-        const randomIndex = Math.floor(Math.random() * maxGuesses);
-        
+        if (hintUsed) {
+            return;
+        }
+
+        const randomIndex = Math.floor(Math.random() * word.length);
+
         return word[randomIndex];
     },  
 );
 
 const initialState = {
     hint: "",
+    hintUsed: false,
 };
 
 const hintSlice = createSlice({
@@ -26,7 +33,12 @@ const hintSlice = createSlice({
         },
         [requestHint.fulfilled]: (state, action) => {
             state.hint = action.payload;
+            state.hintUsed = true;
         },
+        [resetHint]: (state) => {
+            state.hint = "";
+            state.hintUsed = false;
+        }
     },
 });
 

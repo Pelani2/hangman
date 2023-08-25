@@ -1,0 +1,25 @@
+.hangman-game__hint {
+    background-color: #f0f0f0;
+    border: 2px solid #333;
+    border-radius: 8px;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 10px;
+
+    &:hover {
+        background-color: #333;
+        color: #f0f0f0;
+        transform: scale(1.1);
+        cursor: pointer;
+    }
+
+    &:disabled {
+        background-color: #333;
+        border-color: #999;
+        color: #999;
+        cursor: not-allowed;
+    }
+}

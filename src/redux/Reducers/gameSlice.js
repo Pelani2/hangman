@@ -1,41 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import hintReducer, { resetHint } from './hintSlice';
 import words from "../../utils/words";
 
 const easyWords = words.filter((word) => word.length <= 6);
 const mediumWords = words.filter((word) => word.length <= 10);
 const hardWords = words.filter((word) => word.length >= 12);
-
-// export const getMaxIncorrectGuesses = (state) => {
-//     const difficulty = state.game.difficulty;
-//     let maxIncorrectGuesses;
-//     if (difficulty === 'easy') {
-//       maxIncorrectGuesses = 8;
-//     } else if (difficulty === 'medium') {
-//       maxIncorrectGuesses = 6;
-//     } else if (difficulty === 'hard') {
-//       maxIncorrectGuesses = 4;
-//     }
-//     return maxIncorrectGuesses;
-// };
-
-// const selectRandomWord = createAsyncThunk(
-//   'game/selectRandomWord',
-//   async (_, { getState }) => {
-//     const state = getState();
-//     const difficulty = state.game.difficulty;
-//     let words;
-//     if (difficulty === 'easy') {
-//       words = easyWords;
-//     } else if (difficulty === 'medium') {
-//       words = mediumWords;
-//     } else if (difficulty === 'hard') {
-//       words = hardWords;
-//     }
-
-//     const randomIndex = Math.floor(Math.random() * words.length);
-//     return words[randomIndex];
-//   },
-// );
 
 const selectRandomWordAndMaxGuesses = createAsyncThunk(
   'game/selectRandomWordAndMaxGuesses',
@@ -93,6 +62,7 @@ const gameSlice = createSlice({
       state.incorrectGuesses = 0;
       state.status = 'idle';
       state.maxIncorrectGuesses = 0;
+      hintReducer(state.hint, resetHint());
     },
     setDifficulty(state, action) {
       state.difficulty = action.payload;
