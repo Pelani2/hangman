@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addGuessedLetter, getMaxIncorrectGuesses, resetGame, selectRandomWord, setDifficulty, startGame, setShowDifficulty } from "../../redux/Reducers/gameSlice";
+import { addGuessedLetter, getMaxIncorrectGuesses, resetGame, selectRandomWord, setDifficulty, startGame, setShowDifficulty, setShowContent } from "../../redux/Reducers/gameSlice";
 import WordDisplay from "../WordDisplay";
 import "./hangman-game-styles.scss";
 
@@ -25,6 +25,8 @@ const HangmanGame = () => {
 
     const showDifficulty = useSelector((state) => state.game.showDifficulty);
 
+    const showContent = useSelector((state) => state.game.showContent);
+
     const handleLetterClick = (letter) => {
         dispatch(addGuessedLetter(letter));
     };
@@ -37,6 +39,7 @@ const HangmanGame = () => {
 
     const handleDifficultyClick = (difficulty) => {
         dispatch(setDifficulty(difficulty));
+        dispatch(setShowContent());
     };
 
     const handlePlayClick = () => {
@@ -69,30 +72,35 @@ const HangmanGame = () => {
             <p className="hangman-game__difficulty-level">
                 Difficulty: {difficulty}
             </p>
-            {hasWon && <p className="hangman-game__message"> Congratulations, you won!</p>}
-            {hasLost && <p className="hangman-game__message"> Sorry, you lost. The word was: {word} </p>}
-            {!hasWon && !hasLost && (
-                <div className="hangman-game__content">
-                    <WordDisplay />
-                    <p className="hangman-game__info">
-                        Incorrect guesses: {incorrectGuesses}
-                    </p>
-                    <p className="hangman-game__info">
-                        Guessed letters: {guessedLetters.join(", ")}
-                    </p>
-                    <div className="hangman-game__buttons">
-                        {[...'abcdefghijklmnopqrstuvwxyz'].map((letter) => (
-                            <button
-                                key={letter}
-                                onClick={() => handleLetterClick(letter)}
-                                disabled={!playing || guessedLetters.includes(letter)}
-                                className="hangman-game__button"
-                            >
-                                {letter}
-                            </button>
-                        ))}
-                    </div>
-                </div>
+
+            {showContent && (
+                <>
+                    {hasWon && <p className="hangman-game__message"> Congratulations, you won!</p>}
+                    {hasLost && <p className="hangman-game__message"> Sorry, you lost. The word was: {word} </p>}
+                    {!hasWon && !hasLost && (
+                        <div className="hangman-game__content">
+                            <WordDisplay />
+                            <p className="hangman-game__info">
+                                Incorrect guesses: {incorrectGuesses}
+                            </p>
+                            <p className="hangman-game__info">
+                                Guessed letters: {guessedLetters.join(", ")}
+                            </p>
+                            <div className="hangman-game__buttons">
+                                {[...'abcdefghijklmnopqrstuvwxyz'].map((letter) => (
+                                    <button
+                                        key={letter}
+                                        onClick={() => handleLetterClick(letter)}
+                                        disabled={!playing || guessedLetters.includes(letter)}
+                                        className="hangman-game__button"
+                                    >
+                                        {letter}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </>
             )}
             <button onClick={handleResetClick} disabled={!playing} className="hangman-game__reset">
                 Reset
