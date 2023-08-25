@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Chewy');
+
 .hangman-game {
     display: flex;
     flex-direction: column;
@@ -8,6 +10,7 @@
         font-size: 48px;
         color: #4a4a4a;
         text-shadow: 2px 2px #ddd;
+        margin-bottom: 20px;
     }
 
     &__message {
@@ -61,6 +64,26 @@
         }
     }
 
+    &__play {
+        padding: 20px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 30px;
+        font-family: 'Chewy', cursive;
+        background: linear-gradient(to right, yellow, green);
+        color: white;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+
+        &:hover {
+            transform: scale(1.1);
+        }
+
+        &:active {
+            scale: (0.9);
+        }
+    }
+
     &__reset {
         width: 100px;
         height: 40px;
@@ -78,4 +101,46 @@
             transition-duration: .3s;
         }
     }
+
+    .hangman-game__difficulty {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+        gap: 10px;
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+
+            &:active {
+                transform: scale(0.9);
+            }
+
+            &.easy {
+                background-color: limegreen;
+                color: white;
+                font-family: "Comic Sans MS", cursive;
+            }
+
+            &.medium {
+                background-color: orange;
+                color: black;
+                font-family: 'Impact', sans-serif;
+            }
+
+            &.hard {
+                background-color: crimson;
+                color: white;
+                font-family: 'Courier New', monospace;
+            }
+        }
+    } 
 }
+
