@@ -5,21 +5,40 @@ const easyWords = words.filter((word) => word.length <= 6);
 const mediumWords = words.filter((word) => word.length <= 10);
 const hardWords = words.filter((word) => word.length >= 12);
 
-export const getMaxIncorrectGuesses = (state) => {
-    const difficulty = state.game.difficulty;
-    let maxIncorrectGuesses;
-    if (difficulty === 'easy') {
-      maxIncorrectGuesses = 8;
-    } else if (difficulty === 'medium') {
-      maxIncorrectGuesses = 6;
-    } else if (difficulty === 'hard') {
-      maxIncorrectGuesses = 4;
-    }
-    return maxIncorrectGuesses;
-};
+// export const getMaxIncorrectGuesses = (state) => {
+//     const difficulty = state.game.difficulty;
+//     let maxIncorrectGuesses;
+//     if (difficulty === 'easy') {
+//       maxIncorrectGuesses = 8;
+//     } else if (difficulty === 'medium') {
+//       maxIncorrectGuesses = 6;
+//     } else if (difficulty === 'hard') {
+//       maxIncorrectGuesses = 4;
+//     }
+//     return maxIncorrectGuesses;
+// };
 
-const selectRandomWord = createAsyncThunk(
-  'game/selectRandomWord',
+// const selectRandomWord = createAsyncThunk(
+//   'game/selectRandomWord',
+//   async (_, { getState }) => {
+//     const state = getState();
+//     const difficulty = state.game.difficulty;
+//     let words;
+//     if (difficulty === 'easy') {
+//       words = easyWords;
+//     } else if (difficulty === 'medium') {
+//       words = mediumWords;
+//     } else if (difficulty === 'hard') {
+//       words = hardWords;
+//     }
+
+//     const randomIndex = Math.floor(Math.random() * words.length);
+//     return words[randomIndex];
+//   },
+// );
+
+const selectRandomWordAndMaxGuesses = createAsyncThunk(
+  'game/selectRandomWordAndMaxGuesses',
   async (_, { getState }) => {
     const state = getState();
     const difficulty = state.game.difficulty;
@@ -32,8 +51,17 @@ const selectRandomWord = createAsyncThunk(
       words = hardWords;
     }
 
+    let maxIncorrectGuesses;
+    if (difficulty === 'easy') {
+      maxIncorrectGuesses = 8;
+    } else if (difficulty === 'medium') {
+      maxIncorrectGuesses = 6;
+    } else if (difficulty === 'hard') {
+      maxIncorrectGuesses = 4;
+    }
+
     const randomIndex = Math.floor(Math.random() * words.length);
-    return words[randomIndex];
+    return { word: words[randomIndex], maxGuesses: maxIncorrectGuesses };
   },
 );
 
@@ -46,6 +74,7 @@ const initialState = {
   playing: false,
   showDifficulty: false,
   showContent: false,
+  maxIncorrectGuesses: 0,
 };
 
 const gameSlice = createSlice({
@@ -63,6 +92,7 @@ const gameSlice = createSlice({
       state.guessedLetters = [];
       state.incorrectGuesses = 0;
       state.status = 'idle';
+      state.maxIncorrectGuesses = 0;
     },
     setDifficulty(state, action) {
       state.difficulty = action.payload;
@@ -82,16 +112,17 @@ const gameSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(selectRandomWord.pending, (state) => {
+      .addCase(selectRandomWordAndMaxGuesses.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(selectRandomWord.fulfilled, (state, action) => {
-        state.word = action.payload;
+      .addCase(selectRandomWordAndMaxGuesses.fulfilled, (state, action) => {
+        state.word = action.payload.word;
+        state.maxIncorrectGuesses = action.payload.maxGuesses;
         state.status = 'idle';
       });
   },
 });
 
 export const { addGuessedLetter, resetGame, setDifficulty, startGame, stopGame, setShowDifficulty, setShowContent } = gameSlice.actions;
-export { selectRandomWord };
+export { selectRandomWordAndMaxGuesses };
 export default gameSlice.reducer;

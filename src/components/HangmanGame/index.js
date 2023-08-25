@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addGuessedLetter, getMaxIncorrectGuesses, resetGame, selectRandomWord, setDifficulty, startGame, setShowDifficulty, setShowContent } from "../../redux/Reducers/gameSlice";
+import { addGuessedLetter, getMaxIncorrectGuesses, resetGame, selectRandomWord, setDifficulty, startGame, setShowDifficulty, setShowContent, selectRandomWordAndMaxGuesses } from "../../redux/Reducers/gameSlice";
 import WordDisplay from "../WordDisplay";
 import "./hangman-game-styles.scss";
 
@@ -13,7 +13,7 @@ const HangmanGame = () => {
 
     const guessedLetters = useSelector((state) => state.game.guessedLetters);
 
-    const maxIncorrectGuesses = useSelector(getMaxIncorrectGuesses);
+    const maxIncorrectGuesses = useSelector((state) => state.game.maxIncorrectGuesses);
 
     const difficulty = useSelector((state) => state.game.difficulty);
 
@@ -33,7 +33,7 @@ const HangmanGame = () => {
 
     const handleResetClick = () => {
         dispatch(resetGame());
-        dispatch(selectRandomWord());
+        dispatch(selectRandomWordAndMaxGuesses());
     };
 
 
@@ -44,7 +44,7 @@ const HangmanGame = () => {
 
     const handlePlayClick = () => {
         dispatch(startGame());
-        dispatch(selectRandomWord());
+        dispatch(selectRandomWordAndMaxGuesses());
         dispatch(setShowDifficulty());
     };
 
