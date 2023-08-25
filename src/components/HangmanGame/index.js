@@ -1,17 +1,29 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addGuessedLetter, getMaxIncorrectGuesses, resetGame, selectRandomWord, setDifficulty, startGame } from "../../redux/Reducers/gameSlice";
+import { addGuessedLetter, getMaxIncorrectGuesses, resetGame, selectRandomWord, setDifficulty, startGame, setShowDifficulty } from "../../redux/Reducers/gameSlice";
 import WordDisplay from "../WordDisplay";
 import "./hangman-game-styles.scss";
 
 const HangmanGame = () => {
     const dispatch = useDispatch();
+
     const word = useSelector((state) => state.game.word);
+
     const incorrectGuesses = useSelector((state) => state.game.incorrectGuesses);
+
     const guessedLetters = useSelector((state) => state.game.guessedLetters);
+
     const maxIncorrectGuesses = useSelector(getMaxIncorrectGuesses);
+
     const difficulty = useSelector((state) => state.game.difficulty);
+
     const playing = useSelector((state) => state.game.playing);
+
+    const hasWon = word.split("").every((letter) => guessedLetters.includes(letter));
+
+    const hasLost = incorrectGuesses >= maxIncorrectGuesses;
+
+    const showDifficulty = useSelector((state) => state.game.showDifficulty);
 
     const handleLetterClick = (letter) => {
         dispatch(addGuessedLetter(letter));
@@ -22,8 +34,6 @@ const HangmanGame = () => {
         dispatch(selectRandomWord());
     };
 
-    const hasWon = word.split("").every((letter) => guessedLetters.includes(letter));
-    const hasLost = incorrectGuesses >= maxIncorrectGuesses;
 
     const handleDifficultyClick = (difficulty) => {
         dispatch(setDifficulty(difficulty));
@@ -32,6 +42,7 @@ const HangmanGame = () => {
     const handlePlayClick = () => {
         dispatch(startGame());
         dispatch(selectRandomWord());
+        dispatch(setShowDifficulty());
     };
 
     return (
@@ -39,17 +50,19 @@ const HangmanGame = () => {
             <button onClick={handlePlayClick} className="hangman-game__play">
                 Play
             </button>
-            <div className="hangman-game__difficulty">
-                <button onClick={() => handleDifficultyClick('easy')}>
-                    Easy
-                </button>
-                <button onClick={() => handleDifficultyClick('medium')}>
-                    Medium
-                </button>
-                <button onClick={() => handleDifficultyClick('hard')}>
-                    Hard
-                </button>
-            </div>
+            {showDifficulty && (
+                <div className="hangman-game__difficulty">
+                    <button onClick={() => handleDifficultyClick('easy')}>
+                        Easy
+                    </button>
+                    <button onClick={() => handleDifficultyClick('medium')}>
+                        Medium
+                    </button>
+                    <button onClick={() => handleDifficultyClick('hard')}>
+                        Hard
+                    </button>
+                </div>
+            )}
             <h1 className="hangman-game__title">
                 Hangman
             </h1>

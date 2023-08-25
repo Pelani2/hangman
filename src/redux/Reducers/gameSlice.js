@@ -44,6 +44,7 @@ const initialState = {
   status: 'idle',
   difficulty: 'easy',
   playing: false,
+  showDifficulty: false,
 };
 
 const gameSlice = createSlice({
@@ -71,6 +72,9 @@ const gameSlice = createSlice({
     stopGame(state) {
       state.playing = false;
     },
+    setShowDifficulty(state) {
+      state.showDifficulty = true;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -84,6 +88,6 @@ const gameSlice = createSlice({
   },
 });
 
-export const { addGuessedLetter, resetGame, setDifficulty, startGame, stopGame } = gameSlice.actions;
+export const { addGuessedLetter, resetGame, setDifficulty, startGame, stopGame, setShowDifficulty } = gameSlice.actions;
 export { selectRandomWord };
 export default gameSlice.reducer;
