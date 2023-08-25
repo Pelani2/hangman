@@ -43,6 +43,7 @@ const initialState = {
   incorrectGuesses: 0,
   status: 'idle',
   difficulty: 'easy',
+  playing: false,
 };
 
 const gameSlice = createSlice({
@@ -63,6 +64,12 @@ const gameSlice = createSlice({
     },
     setDifficulty(state, action) {
       state.difficulty = action.payload;
+    },
+    startGame(state) {
+      state.playing = true;
+    },
+    stopGame(state) {
+      state.playing = false;
     },
   },
   extraReducers: (builder) => {
