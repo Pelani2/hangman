@@ -10,6 +10,16 @@ const HangmanGame = () => {
     const incorrectGuesses = useSelector((state) => state.game.incorrectGuesses);
     const guessedLetters = useSelector((state) => state.game.guessedLetters);
 
+    const difficulty = useSelector((state) => state.game.difficulty);
+    let maxIncorrectGuesses;
+    if (difficulty === 'easy') {
+        maxIncorrectGuesses = 8;
+    } else if (difficulty === 'medium') {
+        maxIncorrectGuesses = 6;
+    } else if (difficulty === 'hard') {
+        maxIncorrectGuesses = 4;
+    }
+
     const handleLetterClick = (letter) => {
         dispatch(addGuessedLetter(letter));
     };
@@ -20,7 +30,7 @@ const HangmanGame = () => {
     };
 
     const hasWon = word.split("").every((letter) => guessedLetters.includes(letter));
-    const hasLost = incorrectGuesses >= 6;
+    const hasLost = incorrectGuesses >= maxIncorrectGuesses;
 
     const handleDifficultyClick = (difficulty) => {
         dispatch(setDifficulty(difficulty));
@@ -29,13 +39,13 @@ const HangmanGame = () => {
     return (
         <div className="hangman-game">
             <div className="hangman-game__difficulty">
-                <button onClick={handleDifficultyClick('easy')}>
+                <button onClick={() => handleDifficultyClick('easy')}>
                     Easy
                 </button>
-                <button onClick={handleDifficultyClick('medium')}>
+                <button onClick={() => handleDifficultyClick('medium')}>
                     Medium
                 </button>
-                <button onClick={handleDifficultyClick('hard')}>
+                <button onClick={() => handleDifficultyClick('hard')}>
                     Hard
                 </button>
             </div>
