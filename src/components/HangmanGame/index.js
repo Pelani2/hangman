@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addGuessedLetter, resetGame, selectRandomWord, setDifficulty } from "../../redux/Reducers/gameSlice";
+import { addGuessedLetter, getMaxIncorrectGuesses, resetGame, selectRandomWord, setDifficulty } from "../../redux/Reducers/gameSlice";
 import WordDisplay from "../WordDisplay";
 import "./hangman-game-styles.scss";
 
@@ -9,16 +9,8 @@ const HangmanGame = () => {
     const word = useSelector((state) => state.game.word);
     const incorrectGuesses = useSelector((state) => state.game.incorrectGuesses);
     const guessedLetters = useSelector((state) => state.game.guessedLetters);
-
+    const maxIncorrectGuesses = useSelector(getMaxIncorrectGuesses);
     const difficulty = useSelector((state) => state.game.difficulty);
-    let maxIncorrectGuesses;
-    if (difficulty === 'easy') {
-        maxIncorrectGuesses = 8;
-    } else if (difficulty === 'medium') {
-        maxIncorrectGuesses = 6;
-    } else if (difficulty === 'hard') {
-        maxIncorrectGuesses = 4;
-    }
 
     const handleLetterClick = (letter) => {
         dispatch(addGuessedLetter(letter));
@@ -52,6 +44,9 @@ const HangmanGame = () => {
             <h1 className="hangman-game__title">
                 Hangman
             </h1>
+            <p className="hangman-game__difficulty-level">
+                Difficulty: {difficulty}
+            </p>
             {hasWon && <p className="hangman-game__message"> Congratulations, you won!</p>}
             {hasLost && <p className="hangman-game__message"> Sorry, you lost. The word was: {word} </p>}
             {!hasWon && !hasLost && (

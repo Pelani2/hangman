@@ -5,6 +5,19 @@ const easyWords = words.filter((word) => word.length <= 6);
 const mediumWords = words.filter((word) => word.length <= 10);
 const hardWords = words.filter((word) => word.length >= 12);
 
+export const getMaxIncorrectGuesses = (state) => {
+    const difficulty = state.game.difficulty;
+    let maxIncorrectGuesses;
+    if (difficulty === 'easy') {
+      maxIncorrectGuesses = 8;
+    } else if (difficulty === 'medium') {
+      maxIncorrectGuesses = 6;
+    } else if (difficulty === 'hard') {
+      maxIncorrectGuesses = 4;
+    }
+    return maxIncorrectGuesses;
+};
+
 const selectRandomWord = createAsyncThunk(
   'game/selectRandomWord',
   async (_, { getState }) => {
