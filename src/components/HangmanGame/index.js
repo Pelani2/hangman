@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addGuessedLetter, getMaxIncorrectGuesses, resetGame, selectRandomWord, setDifficulty } from "../../redux/Reducers/gameSlice";
+import { addGuessedLetter, getMaxIncorrectGuesses, resetGame, selectRandomWord, setDifficulty, startGame } from "../../redux/Reducers/gameSlice";
 import WordDisplay from "../WordDisplay";
 import "./hangman-game-styles.scss";
 
@@ -11,6 +11,7 @@ const HangmanGame = () => {
     const guessedLetters = useSelector((state) => state.game.guessedLetters);
     const maxIncorrectGuesses = useSelector(getMaxIncorrectGuesses);
     const difficulty = useSelector((state) => state.game.difficulty);
+    const playing = useSelector((state) => state.game.playing);
 
     const handleLetterClick = (letter) => {
         dispatch(addGuessedLetter(letter));
@@ -28,8 +29,16 @@ const HangmanGame = () => {
         dispatch(setDifficulty(difficulty));
     };
 
+    const handlePlayClick = () => {
+        dispatch(startGame());
+        dispatch(selectRandomWord());
+    };
+
     return (
         <div className="hangman-game">
+            <button onClick={handlePlayClick} className="hangman-game__play">
+                Play
+            </button>
             <div className="hangman-game__difficulty">
                 <button onClick={() => handleDifficultyClick('easy')}>
                     Easy
@@ -63,7 +72,7 @@ const HangmanGame = () => {
                             <button
                                 key={letter}
                                 onClick={() => handleLetterClick(letter)}
-                                disabled={guessedLetters.includes(letter)}
+                                disabled={!playing || guessedLetters.includes(letter)}
                                 className="hangman-game__button"
                             >
                                 {letter}
@@ -72,7 +81,7 @@ const HangmanGame = () => {
                     </div>
                 </div>
             )}
-            <button onClick={handleResetClick} className="hangman-game__reset">
+            <button onClick={handleResetClick} disabled={!playing} className="hangman-game__reset">
                 Reset
             </button>
         </div>

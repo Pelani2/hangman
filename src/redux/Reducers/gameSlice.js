@@ -84,6 +84,6 @@ const gameSlice = createSlice({
   },
 });
 
-export const { addGuessedLetter, resetGame, setDifficulty } = gameSlice.actions;
+export const { addGuessedLetter, resetGame, setDifficulty, startGame, stopGame } = gameSlice.actions;
 export { selectRandomWord };
 export default gameSlice.reducer;
