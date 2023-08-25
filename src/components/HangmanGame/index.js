@@ -1,7 +1,8 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addGuessedLetter, getMaxIncorrectGuesses, resetGame, selectRandomWord, setDifficulty, startGame, setShowDifficulty, setShowContent, selectRandomWordAndMaxGuesses } from "../../redux/Reducers/gameSlice";
+import { addGuessedLetter, resetGame, setDifficulty, startGame, setShowDifficulty, setShowContent, selectRandomWordAndMaxGuesses } from "../../redux/Reducers/gameSlice";
 import WordDisplay from "../WordDisplay";
+import Hint from "../Hint";
 import "./hangman-game-styles.scss";
 
 const HangmanGame = () => {
@@ -82,6 +83,7 @@ const HangmanGame = () => {
                     {!hasWon && !hasLost && (
                         <div className="hangman-game__content">
                             <WordDisplay />
+                            <Hint />
                             <p className="hangman-game__info">
                                 Incorrect guesses: {incorrectGuesses}
                             </p>
@@ -106,8 +108,7 @@ const HangmanGame = () => {
                         Reset
                     </button>
                 </>
-            )}
-            
+            )}  
         </div>
     );
 }
