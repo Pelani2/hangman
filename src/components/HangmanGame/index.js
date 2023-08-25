@@ -50,31 +50,33 @@ const HangmanGame = () => {
 
     return (
         <div className="hangman-game">
+            <h1 className="hangman-game__title">
+                Hangman
+            </h1>
+            
             <button onClick={handlePlayClick} className="hangman-game__play">
                 Play
             </button>
+
             {showDifficulty && (
-                <div className="hangman-game__difficulty">
-                    <button onClick={() => handleDifficultyClick('easy')}>
+                <div className="hangman-game__difficulty easy">
+                    <button onClick={() => handleDifficultyClick('easy')} className="easy">
                         Easy
                     </button>
-                    <button onClick={() => handleDifficultyClick('medium')}>
+                    <button onClick={() => handleDifficultyClick('medium')} className="medium">
                         Medium
                     </button>
-                    <button onClick={() => handleDifficultyClick('hard')}>
+                    <button onClick={() => handleDifficultyClick('hard')} className="hard">
                         Hard
                     </button>
                 </div>
             )}
-            <h1 className="hangman-game__title">
-                Hangman
-            </h1>
-            <p className="hangman-game__difficulty-level">
-                Difficulty: {difficulty}
-            </p>
-
+            
             {showContent && (
                 <>
+                    <p className="hangman-game__difficulty-level">
+                        Difficulty: {difficulty}
+                    </p>
                     {hasWon && <p className="hangman-game__message"> Congratulations, you won!</p>}
                     {hasLost && <p className="hangman-game__message"> Sorry, you lost. The word was: {word} </p>}
                     {!hasWon && !hasLost && (
@@ -100,11 +102,12 @@ const HangmanGame = () => {
                             </div>
                         </div>
                     )}
+                    <button onClick={handleResetClick} disabled={!playing} className="hangman-game__reset">
+                        Reset
+                    </button>
                 </>
             )}
-            <button onClick={handleResetClick} disabled={!playing} className="hangman-game__reset">
-                Reset
-            </button>
+            
         </div>
     );
 }
