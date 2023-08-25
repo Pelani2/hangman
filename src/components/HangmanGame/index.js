@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addGuessedLetter, resetGame, selectRandomWord } from "../../redux/Reducers/gameSlice";
+import { addGuessedLetter, resetGame, selectRandomWord, setDifficulty } from "../../redux/Reducers/gameSlice";
 import WordDisplay from "../WordDisplay";
 import "./hangman-game-styles.scss";
 
@@ -22,8 +22,23 @@ const HangmanGame = () => {
     const hasWon = word.split("").every((letter) => guessedLetters.includes(letter));
     const hasLost = incorrectGuesses >= 6;
 
+    const handleDifficultyClick = (difficulty) => {
+        dispatch(setDifficulty(difficulty));
+    };
+
     return (
         <div className="hangman-game">
+            <div className="hangman-game__difficulty">
+                <button onClick={handleDifficultyClick('easy')}>
+                    Easy
+                </button>
+                <button onClick={handleDifficultyClick('medium')}>
+                    Medium
+                </button>
+                <button onClick={handleDifficultyClick('hard')}>
+                    Hard
+                </button>
+            </div>
             <h1 className="hangman-game__title">
                 Hangman
             </h1>
