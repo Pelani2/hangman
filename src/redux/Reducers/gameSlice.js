@@ -1,12 +1,27 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import words from "../../utils/words";
 
+const easyWords = words.filter((word) => word.length <= 6);
+const mediumWords = words.filter((word) => word.length <= 10);
+const hardWords = words.filter((word) => word.length >= 12);
+
 const selectRandomWord = createAsyncThunk(
   'game/selectRandomWord',
-  async () => {
+  async (_, { getState }) => {
+    const state = getState();
+    const difficulty = state.game.difficulty;
+    let words;
+    if (difficulty === 'easy') {
+      words = easyWords;
+    } else if (difficulty === 'medium') {
+      words = mediumWords;
+    } else if (difficulty === 'hard') {
+      words = hardWords;
+    }
+
     const randomIndex = Math.floor(Math.random() * words.length);
     return words[randomIndex];
-  }
+  },
 );
 
 const initialState = {
