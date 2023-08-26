@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addGuessedLetter, resetGame, setDifficulty, startGame, setShowDifficulty, setShowContent, selectRandomWordAndMaxGuesses } from "../../redux/Reducers/gameSlice";
 import WordDisplay from "../WordDisplay";
 import Hint from "../Hint";
+import Timer from "../Timer";
 import "./hangman-game-styles.scss";
 import { resetHint } from "../../redux/Reducers/hintSlice";
 
@@ -56,6 +57,8 @@ const HangmanGame = () => {
             <h1 className="hangman-game__title">
                 Hangman
             </h1>
+
+            <Timer />
             
             <button onClick={handlePlayClick} className="hangman-game__play">
                 Play
