@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addGuessedLetter, resetGame, setDifficulty, startGame, setShowDifficulty, setShowContent, selectRandomWordAndMaxGuesses } from "../../redux/Reducers/gameSlice";
 import WordDisplay from "../WordDisplay";
 import Hint from "../Hint";
-import Timer from "../Timer";
-import "./hangman-game-styles.scss";
 import { resetHint } from "../../redux/Reducers/hintSlice";
+import "./hangman-game-styles.scss";
 
 const HangmanGame = () => {
     const dispatch = useDispatch();
+
+    const [timeLeft, setTimeLeft] = useState(60);
+
+    const [isRunning, setIsRunning] = useState(false);
 
     const word = useSelector((state) => state.game.word);
 
@@ -30,16 +33,33 @@ const HangmanGame = () => {
 
     const showContent = useSelector((state) => state.game.showContent);
 
+    useEffect(() => {
+        if (isRunning && timeLeft > 0) {
+            const intervalId = setInterval(() => {
+                setTimeLeft(timeLeft - 1);
+            }, 1000);
+            return () => clearInterval(intervalId);
+        } else if (timeLeft === 0) {
+            alert(`Time is up. You lose. The word was ${word}`);
+            setIsRunning(false);
+        }
+    }, [isRunning, timeLeft, dispatch, word]);
+
     const handleLetterClick = (letter) => {
         dispatch(addGuessedLetter(letter));
+        if (hasWon || hasLost) {
+            setIsRunning(false);
+            setTimeLeft(60);
+        }
     };
 
     const handleResetClick = () => {
         dispatch(resetGame());
         dispatch(selectRandomWordAndMaxGuesses());
         dispatch(resetHint());
+        setIsRunning(false);
+        setTimeLeft(60);
     };
-
 
     const handleDifficultyClick = (difficulty) => {
         dispatch(setDifficulty(difficulty));
@@ -50,6 +70,7 @@ const HangmanGame = () => {
         dispatch(startGame());
         dispatch(selectRandomWordAndMaxGuesses());
         dispatch(setShowDifficulty());
+        setIsRunning(true);
     };
 
     return (
@@ -58,8 +79,6 @@ const HangmanGame = () => {
                 Hangman
             </h1>
 
-            <Timer />
-            
             <button onClick={handlePlayClick} className="hangman-game__play">
                 Play
             </button>
@@ -83,11 +102,14 @@ const HangmanGame = () => {
                     <p className="hangman-game__difficulty-level">
                         Difficulty: {difficulty}
                     </p>
-                    {hasWon && <p className="hangman-game__message"> Congratulations, you won!</p>}
-                    {hasLost && <p className="hangman-game__message"> Sorry, you lost. The word was: {word} </p>}
+                    {hasWon && <p className="hangman-game__message hangman-game__message--win"> Congratulations, you won!</p>}
+                    {hasLost && <p className="hangman-game__message hangman-game__message--lose"> Sorry, you lost. The word was: {word} </p>}
                     {!hasWon && !hasLost && (
                         <div className="hangman-game__content">
                             <WordDisplay />
+                            <p className="hangman-game__timer">
+                                Time left: {timeLeft} seconds
+                            </p>
                             <Hint />
                             <p className="hangman-game__info">
                                 Incorrect guesses: {incorrectGuesses}

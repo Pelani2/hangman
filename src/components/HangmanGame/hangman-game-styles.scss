@@ -14,9 +14,20 @@
     }
 
     &__message {
-        font-size: 24px;
-        color: #4a4a4a;
-        text-shadow: 1px 1px #ddd;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        animation: pulse 5s;
+
+        &--win {
+            color: green;
+        }
+
+        &--lose {
+            color: red;
+        }
     }
 
     &__content {
@@ -156,3 +167,14 @@
     }
 }
 
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0;
+    }
+}
